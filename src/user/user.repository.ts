@@ -7,4 +7,8 @@ export class UserRepository {
   constructor(
     @InjectModel(User) private readonly userModel: typeof User,) {}
 
+
 }
+
+
+

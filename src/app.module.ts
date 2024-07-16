@@ -5,7 +5,7 @@ import { ProductModule } from './product/product.module';
 import { ReviewModule } from './review/review.module';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { User, Product, Review, RefreshToken } from './entities/index.entity';
+import { User, Product, Review, RefreshToken, Otp } from './entities/index.entity';
 import { JwtModule } from '@nestjs/jwt';
 
 
@@ -24,7 +24,7 @@ import { JwtModule } from '@nestjs/jwt';
       database: process.env.POSTGRES_DATABASE,
       autoLoadModels: true,
       synchronize: true,
-      models: [User, Product, Review, RefreshToken],
+      models: [User, Product, Review, RefreshToken, Otp],
     }),
     JwtModule.register({
       global: true,
