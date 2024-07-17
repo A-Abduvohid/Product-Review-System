@@ -23,6 +23,11 @@ export class UserRepository {
     //  SELECT * FROM users WHERE email = email
   }
 
+  async findByPk(id: string): Promise<any> {
+    return await this.userModel.findByPk(id);
+    //  SELECT * FROM users WHERE id = id
+  }
+
   async findOneUserWithUsername(username: string): Promise<any> {
     return await this.userModel.findOne({ where: { username } });
     //  SELECT * FROM users WHERE username = username

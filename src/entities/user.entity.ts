@@ -1,5 +1,6 @@
 import { UUIDV4 } from 'sequelize';
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { Column, DataType, Model, Table, HasMany } from 'sequelize-typescript';
+import { Review } from './review.entity';
 
 interface IUser {
   id: string;
@@ -10,45 +11,47 @@ interface IUser {
   status: string;
 }
 
-
 @Table({ tableName: 'users' })
 export class User extends Model<User, IUser> {
   @Column({
     primaryKey: true,
     type: DataType.UUID,
     defaultValue: UUIDV4,
-    allowNull: false
+    allowNull: false,
   })
   id: string;
 
   @Column({
     allowNull: false,
-    unique: true
+    unique: true,
   })
   username: string;
 
   @Column({
     allowNull: false,
-    unique: true
+    unique: true,
   })
   email: string;
 
   @Column({
-    allowNull: false
+    allowNull: false,
   })
   password: string;
 
   @Column({
     allowNull: false,
     type: DataType.ENUM('user', 'admin', 'moderator'),
-    defaultValue: 'user'
+    defaultValue: 'user',
   })
   role: string;
 
   @Column({
     allowNull: false,
     type: DataType.ENUM('inactive', 'active'),
-    defaultValue: 'inactive'
+    defaultValue: 'inactive',
   })
   status: string;
+
+  @HasMany(() => Review)
+  reviews: Review[];
 }

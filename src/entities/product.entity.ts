@@ -1,5 +1,6 @@
 import { UUIDV4 } from 'sequelize';
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { Column, DataType, Model, Table, HasMany } from 'sequelize-typescript';
+import { Review } from './review.entity';
 
 interface IProduct {
   id: string;
@@ -9,38 +10,39 @@ interface IProduct {
   price: number;
 }
 
-
 @Table({ tableName: 'products' })
 export class Product extends Model<Product, IProduct> {
   @Column({
     primaryKey: true,
     type: DataType.UUID,
     defaultValue: UUIDV4,
-    allowNull: false
+    allowNull: false,
   })
   id: string;
 
   @Column({
     allowNull: false,
-    unique: true
+    unique: true,
   })
   name: string;
 
   @Column({
     allowNull: false,
-    type: DataType.TEXT
+    type: DataType.TEXT,
   })
   description: string;
 
   @Column({
-    allowNull: false
+    allowNull: false,
   })
   category: string;
 
   @Column({
     allowNull: false,
-    type: DataType.DECIMAL
+    type: DataType.DECIMAL,
   })
   price: number;
-}
 
+  @HasMany(() => Review)
+  reviews: Review[];
+}
