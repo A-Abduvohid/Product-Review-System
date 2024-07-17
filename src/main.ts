@@ -11,3 +11,12 @@ async function bootstrap() {
   await app.listen(PORT);
 }
 bootstrap();
+
+/*
+
+      "username": "Abduvohid",
+      "email": "abduvohidabdurahimov1@gmail.com",
+      "password": "123456",
+      "role": "admin"
+      
+*/ 

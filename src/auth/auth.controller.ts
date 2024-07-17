@@ -7,11 +7,14 @@ import {
   RefreshTokenDto,
 } from 'src/dto/index.dto';
 import { AuthGuard } from 'src/middleware/guard';
+import { Role, Roles } from 'src/middleware/roles.decorator';
+import { RolesGuard } from 'src/middleware/roleGuard';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  
   @Post('signup')
   signup(@Body() signUpUserDto: SignUpUserDto) {
     return this.authService.signup(signUpUserDto);
@@ -27,8 +30,10 @@ export class AuthController {
     return this.authService.signin(signInUserDto);
   }
 
-  @UseGuards(AuthGuard)
+
   @Post('refresh-token')
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.User, Role.Moderator, Role.Admin)
   refresh_token(
     @Body() refreshTokenDto: RefreshTokenDto,
     @Req() request: Request,
@@ -36,14 +41,18 @@ export class AuthController {
     return this.authService.refresh_token(refreshTokenDto, request);
   }
 
-  @UseGuards(AuthGuard)
+
   @Get('me')
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.User, Role.Moderator, Role.Admin)
   getMe(@Req() request: Request) {
     return this.authService.getMe(request);
   }
 
-  @UseGuards(AuthGuard)
+  
   @Get('logout')
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.User, Role.Moderator, Role.Admin)
   logout(@Req() request: Request) {
     return this.authService.logout(request);
   }

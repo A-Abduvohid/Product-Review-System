@@ -10,7 +10,7 @@ interface IProduct {
 }
 
 
-@Table({ tableName: 'users' })
+@Table({ tableName: 'products' })
 export class Product extends Model<Product, IProduct> {
   @Column({
     primaryKey: true,
