@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User, Product, Review, RefreshToken, Otp } from './entities/index.entity';
 import { JwtModule } from '@nestjs/jwt';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 
 @Module({
@@ -29,6 +30,16 @@ import { JwtModule } from '@nestjs/jwt';
     JwtModule.register({
       global: true,
       secret: process.env.TOKEN_SECRET
+    }),
+    MailerModule.forRoot({
+      transport: {
+        host: process.env.MAILER_HOST,
+        port: 587,
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.APP_PASSWORD,
+        },
+      },
     }),
     AuthModule,
     UserModule,
