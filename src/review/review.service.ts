@@ -2,17 +2,11 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ReviewRepository } from './review.repository';
 import { UserRepository } from 'src/user/user.repository';
 import { ProductRepository } from 'src/product/product.repository';
-import { CreateReviewDto } from 'src/dto/createReview.dto';
-import { UpdateReviewDto } from 'src/dto/updateReview.dto';
-import { InjectModel } from '@nestjs/sequelize';
-import { User } from 'src/entities/user.entity';
-import { Review } from 'src/entities/review.entity';
+import { CreateReviewDto, UpdateReviewDto } from 'src/dto/index.dto';
 
 @Injectable()
 export class ReviewService {
   constructor(
-    @InjectModel(User) private readonly userModel: typeof User,
-    @InjectModel(Review) private readonly reviewModel: typeof Review,
     private readonly reviewRepository: ReviewRepository,
     private readonly userRepository: UserRepository,
     private readonly productRepository: ProductRepository,
@@ -53,17 +47,14 @@ export class ReviewService {
     }
   }
 
-  async findAll(request: any): Promise<any> {
+  async findAll(): Promise<any> {
     try {
-      const allReviews = await this.reviewModel.findAll({
-        include: { all: true },
-      });
+      const allReviews = await this.reviewRepository.findAll();
 
       if (!allReviews) {
         return new HttpException('Not Found', HttpStatus.NOT_FOUND);
       }
       return allReviews;
-      
     } catch (error) {
       console.log(error);
 
@@ -76,7 +67,12 @@ export class ReviewService {
 
   async findOne(id: string): Promise<any> {
     try {
-      return;
+      const review = await this.reviewRepository.findOne(id);
+
+      if (!review) {
+        return new HttpException('Not Found', HttpStatus.NOT_FOUND);
+      }
+      return review;
     } catch (error) {
       console.log(error);
 
@@ -89,7 +85,36 @@ export class ReviewService {
 
   async update(id: string, updateReviewDto: UpdateReviewDto): Promise<any> {
     try {
-      return;
+      const { user_id, product_id } = updateReviewDto;
+
+      const existUser = await this.userRepository.findByPk(user_id);
+
+      const existProduct = await this.productRepository.findOne(product_id);
+
+      if (!existProduct || !existUser) {
+        return new HttpException(
+          'User or Product is not exist',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const updatedReview = await this.reviewRepository.update(id, {
+        ...updateReviewDto,
+        user_id,
+        product_id,
+      });
+
+      if (!updatedReview) {
+        return new HttpException(
+          'Something wrong',
+          HttpStatus.FAILED_DEPENDENCY,
+        );
+      }
+
+      return {
+        message: 'updated Successfully',
+        id: updatedReview.id,
+      };
     } catch (error) {
       console.log(error);
 
@@ -102,7 +127,18 @@ export class ReviewService {
 
   async delete(id: string): Promise<any> {
     try {
-      return;
+      const existReview = await this.reviewRepository.findOne(id);
+
+      if (!existReview) {
+        return new HttpException('Not Found', HttpStatus.NOT_FOUND);
+      }
+
+      await this.reviewRepository.delete(id);
+
+      return {
+        message: 'Successfully deleted',
+        statusCode: 200,
+      };
     } catch (error) {
       console.log(error);
 

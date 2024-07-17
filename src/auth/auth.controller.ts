@@ -14,7 +14,6 @@ import { RolesGuard } from 'src/middleware/roleGuard';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  
   @Post('signup')
   signup(@Body() signUpUserDto: SignUpUserDto) {
     return this.authService.signup(signUpUserDto);
@@ -30,7 +29,6 @@ export class AuthController {
     return this.authService.signin(signInUserDto);
   }
 
-
   @Post('refresh-token')
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.User, Role.Moderator, Role.Admin)
@@ -41,7 +39,6 @@ export class AuthController {
     return this.authService.refresh_token(refreshTokenDto, request);
   }
 
-
   @Get('me')
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.User, Role.Moderator, Role.Admin)
@@ -49,7 +46,6 @@ export class AuthController {
     return this.authService.getMe(request);
   }
 
-  
   @Get('logout')
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.User, Role.Moderator, Role.Admin)

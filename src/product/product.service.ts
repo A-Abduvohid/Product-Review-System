@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateProductDto } from 'src/dto/index.dto';
+import { CreateProductDto, UpdateProductDto } from 'src/dto/index.dto';
 import { ProductRepository } from './product.repository';
 
 @Injectable()
@@ -71,7 +71,7 @@ export class ProductService {
     }
   }
 
-  async update(id: string, updateProductDto: any): Promise<any> {
+  async update(id: string, updateProductDto: UpdateProductDto): Promise<any> {
     try {
       const { price } = updateProductDto;
 
@@ -119,7 +119,7 @@ export class ProductService {
 
       return {
         message: 'Successfully deleted',
-        statusCode: 200
+        statusCode: 200,
       };
     } catch (error) {
       console.log(error);

@@ -1,10 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Put } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  UseGuards,
+  Put,
+} from '@nestjs/common';
 import { ProductService } from './product.service';
 import { AuthGuard } from 'src/middleware/guard';
 import { Role, Roles } from 'src/middleware/roles.decorator';
 import { RolesGuard } from 'src/middleware/roleGuard';
 import { CreateProductDto, UpdateProductDto } from 'src/dto/index.dto';
-
 
 @Controller('products')
 export class ProductController {
@@ -12,7 +20,7 @@ export class ProductController {
 
   @Post()
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(Role.Moderator, Role.Admin)
+  @Roles(Role.Admin)
   create(@Body() createProductDto: CreateProductDto) {
     return this.productService.create(createProductDto);
   }
@@ -33,7 +41,7 @@ export class ProductController {
 
   @Put(':id')
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(Role.Admin, Role.Moderator,)
+  @Roles(Role.Admin, Role.Moderator)
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     return this.productService.update(id, updateProductDto);
   }

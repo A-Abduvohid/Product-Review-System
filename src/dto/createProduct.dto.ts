@@ -1,21 +1,27 @@
-import { IsDecimal, IsNotEmpty, IsPositive, IsString, Length, Min } from 'class-validator';
+import {
+  IsDecimal,
+  IsNotEmpty,
+  IsPositive,
+  IsString,
+  Length,
+} from 'class-validator';
 
 export class CreateProductDto {
-    @IsNotEmpty()
-    @IsString()
-    @Length(5, 20)
-    name: string;
+  @IsNotEmpty()
+  @IsString()
+  @Length(5, 20)
+  name: string;
 
-    @IsString()
-    @IsNotEmpty()
-    description: string;
+  @IsString()
+  @IsNotEmpty()
+  description: string;
 
-    @IsString()
-    @IsNotEmpty()
-    category: string;
+  @IsString()
+  @IsNotEmpty()
+  category: string;
 
-    @IsNotEmpty()
-    @IsDecimal()
-    @IsPositive()
-    price: number;
+  @IsNotEmpty()
+  @IsDecimal()
+  @IsPositive()
+  price: number;
 }

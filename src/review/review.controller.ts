@@ -1,10 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  UseGuards,
+  Put,
+} from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { RolesGuard } from 'src/middleware/roleGuard';
 import { Role, Roles } from 'src/middleware/roles.decorator';
 import { AuthGuard } from 'src/middleware/guard';
-import { Request, request } from 'express';
-
+import { CreateReviewDto, UpdateReviewDto } from 'src/dto/index.dto';
 
 @Controller('reviews')
 export class ReviewController {
@@ -13,15 +21,15 @@ export class ReviewController {
   @Post()
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.Moderator, Role.Admin, Role.User)
-  create(@Body() createReviewDto: any) {
+  create(@Body() createReviewDto: CreateReviewDto) {
     return this.reviewService.create(createReviewDto);
   }
 
   @Get()
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.Moderator, Role.Admin, Role.User)
-  findAll(@Req() request: Request) {
-    return this.reviewService.findAll(request);
+  findAll() {
+    return this.reviewService.findAll();
   }
 
   @Get(':id')
@@ -31,16 +39,16 @@ export class ReviewController {
     return this.reviewService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(Role.Moderator, Role.Admin, Role.User)
-  update(@Param('id') id: string, @Body() updateReviewDto: any) {
+  @Roles(Role.Moderator, Role.Admin)
+  update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
     return this.reviewService.update(id, updateReviewDto);
   }
 
   @Delete(':id')
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(Role.Moderator, Role.Admin, Role.User)
+  @Roles(Role.Admin)
   delete(@Param('id') id: string) {
     return this.reviewService.delete(id);
   }

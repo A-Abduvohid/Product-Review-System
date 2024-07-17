@@ -1,15 +1,34 @@
-import { IsEnum, IsNumber, IsString, Length } from 'class-validator';
+import {
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUUID,
+  Length,
+} from 'class-validator';
 
 export class UpdateReviewDto {
+  @IsOptional()
+  @IsUUID()
+  @IsString()
+  user_id: string;
 
-    @IsString()
-    @IsEnum(['approved', 'pending', 'rejected'])
-    status: string;
+  @IsOptional()
+  @IsUUID()
+  @IsString()
+  product_id: string;
 
-    @IsNumber()
-    @Length(1, 5)
-    rating: number;
+  @IsOptional()
+  @IsString()
+  @IsEnum(['approved', 'pending', 'rejected'])
+  status: string;
 
-    @IsString()
-    content: string;
+  @IsOptional()
+  @IsNumber()
+  @Length(1, 5)
+  rating: number;
+
+  @IsOptional()
+  @IsString()
+  content: string;
 }

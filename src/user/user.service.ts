@@ -29,31 +29,6 @@ export class UserService {
 }
 
 
-  // async signup(createUserDto: any) {
-    
-  // }
 
-
-  // async verify_otp(createUserDto: any) {
-    
-  // }
-
-
-  // async signin(createUserDto: any) {
-    
-  // }
-
-  // async refresh_token(createUserDto: any) {
-    
-  // }
-
-
-  // async getMe() {
-    
-  // }
-
-  // async logout() {
-    
-  // }
 
   
