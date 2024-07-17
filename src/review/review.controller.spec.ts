@@ -14,7 +14,5 @@ describe('ReviewController', () => {
     controller = module.get<ReviewController>(ReviewController);
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
+
 });

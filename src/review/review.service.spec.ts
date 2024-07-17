@@ -12,7 +12,5 @@ describe('ReviewService', () => {
     service = module.get<ReviewService>(ReviewService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+
 });

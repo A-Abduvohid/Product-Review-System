@@ -1,0 +1,12 @@
+PORT = 4000
+POSTGRES_HOST = localhost
+POSTGRES_PORT = 5432
+POSTGRES_DATABASE = products_review_system
+POSTGRES_USERNAME = postgres
+POSTGRES_PASSWORD = 
+TOKEN_SECRET = access_token_refresh_token
+MAILER_HOST = smtp.gmail.com
+EMAIL = abduvohidabdurahimov1@gmail.com
+APP_PASSWORD = dear qagn payr 
+ACCESS_TIME = 20m
+REFRESH_TIME = 2d

@@ -14,7 +14,7 @@ export class ReviewService {
 
   async create(createReviewDto: CreateReviewDto): Promise<any> {
     try {
-      const { product_id, user_id } = createReviewDto;
+      const { product_id, user_id, rating } = createReviewDto;
 
       const existUser = await this.userRepository.findByPk(user_id);
 
@@ -26,10 +26,18 @@ export class ReviewService {
           HttpStatus.NOT_FOUND,
         );
       }
+
+      if (typeof rating !== 'number' || rating < 1 || rating > 5) {
+        return new HttpException(
+          'Rating must be a number between 1 and 5',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
       const newReview = await this.reviewRepository.createReview({
         ...createReviewDto,
         user_id: existUser.id,
         product_id: existProduct.id,
+        rating,
       });
 
       return {
@@ -125,7 +133,7 @@ export class ReviewService {
     }
   }
 
-  async delete(id: string): Promise<any> {
+  async delete(id: string, request :any): Promise<any> {
     try {
       const existReview = await this.reviewRepository.findOne(id);
 
@@ -133,7 +141,15 @@ export class ReviewService {
         return new HttpException('Not Found', HttpStatus.NOT_FOUND);
       }
 
-      await this.reviewRepository.delete(id);
+      if (request.user.role === 'user' || request.user.role === 'moderator') {
+        if (request.user.id === existReview.user_id) {
+          await this.reviewRepository.delete(id);
+        } else {
+          return new HttpException('Unutorized', HttpStatus.UNAUTHORIZED);
+        }
+      } else {
+        await this.reviewRepository.delete(id);
+      }
 
       return {
         message: 'Successfully deleted',

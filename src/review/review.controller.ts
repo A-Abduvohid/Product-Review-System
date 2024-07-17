@@ -7,6 +7,7 @@ import {
   Delete,
   UseGuards,
   Put,
+  Req,
 } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { RolesGuard } from 'src/middleware/roleGuard';
@@ -48,8 +49,8 @@ export class ReviewController {
 
   @Delete(':id')
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(Role.Admin)
-  delete(@Param('id') id: string) {
-    return this.reviewService.delete(id);
+  @Roles(Role.Moderator, Role.Admin, Role.User)
+  delete(@Param('id') id: string, @Req() request: Request) {
+    return this.reviewService.delete(id, request);
   }
 }

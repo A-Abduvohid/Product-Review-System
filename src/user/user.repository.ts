@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Otp, RefreshToken, User } from '../entities/index.entity';
 import { Op } from 'sequelize';
-import { SignUpUserDto } from 'src/dto/index.dto';
+import { SignUpUserDto, UpdateUserDto } from 'src/dto/index.dto';
 
 @Injectable()
 export class UserRepository {
@@ -93,4 +93,40 @@ export class UserRepository {
     await token.destroy();
     //  DELETE FROM refresh_tokens WHERE user_id = user_id
   }
+
+  async findAll(): Promise<any> {
+    return await this.userModel.findAll({
+      attributes: [
+        'id',
+        'username',
+        'email',
+        'role',
+        'status',
+        'createdAt',
+        'updatedAt',
+      ],
+      // SELECT id, username, email, role, createdAt, status, updatedAt FROM users
+    });
+  }
+
+  async updateUser(id: string, newUser: UpdateUserDto): Promise<any> {
+    const user = await this.userModel.findByPk(id);
+
+    return await user.update(newUser);
+  }
+
+  // async deleteUserwithOtp(id: string): Promise<any> {
+  //   const user = await this.userModel.findByPk(id);
+  //   const otp = await this.otpModel.findOne({
+  //     where: { user_id: id },
+  //   });
+  //   await user.destroy();
+  //   await otp.destroy();
+  // }
+
+  // async deleteUser(id: string): Promise<any> {
+  //   const user = await this.userModel.findByPk(id);
+
+  //   await user.destroy();
+  // }
 }
