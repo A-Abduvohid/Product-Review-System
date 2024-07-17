@@ -34,11 +34,4 @@ export class RefreshToken extends Model<RefreshToken, IRefreshToken> {
         type: DataType.TEXT
     })
     refresh: string;
-
-    @Column({
-        allowNull: false,
-        type: DataType.DATE,
-        defaultValue: new Date()
-    })
-    time: string;
 }

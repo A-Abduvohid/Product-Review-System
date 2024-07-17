@@ -1,11 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { SignUpUserDto, SignInUserDto, VerifyOtpDto, RefreshTokenDto } from 'src/dto/index.dto';
-
+import {
+  SignUpUserDto,
+  SignInUserDto,
+  VerifyOtpDto,
+  RefreshTokenDto,
+} from 'src/dto/index.dto';
+import { AuthGuard } from 'src/middleware/guard';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   @Post('signup')
   signup(@Body() signUpUserDto: SignUpUserDto) {
@@ -22,18 +27,24 @@ export class AuthController {
     return this.authService.signin(signInUserDto);
   }
 
+  @UseGuards(AuthGuard)
   @Post('refresh-token')
-  refresh_token(@Body() refreshTokenDto: RefreshTokenDto) {
-    return this.authService.refresh_token(refreshTokenDto);
+  refresh_token(
+    @Body() refreshTokenDto: RefreshTokenDto,
+    @Req() request: Request,
+  ) {
+    return this.authService.refresh_token(refreshTokenDto, request);
   }
 
+  @UseGuards(AuthGuard)
   @Get('me')
-  getMe() {
-    return this.authService.getMe();
+  getMe(@Req() request: Request) {
+    return this.authService.getMe(request);
   }
 
+  @UseGuards(AuthGuard)
   @Get('logout')
-  logout() {
-    return this.authService.logout();
+  logout(@Req() request: Request) {
+    return this.authService.logout(request);
   }
 }
