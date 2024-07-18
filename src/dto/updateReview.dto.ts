@@ -4,7 +4,6 @@ import {
   IsOptional,
   IsString,
   IsUUID,
-  Length,
 } from 'class-validator';
 
 export class UpdateReviewDto {
@@ -25,7 +24,6 @@ export class UpdateReviewDto {
 
   @IsOptional()
   @IsNumber()
-  @Length(1, 5)
   rating: number;
 
   @IsOptional()

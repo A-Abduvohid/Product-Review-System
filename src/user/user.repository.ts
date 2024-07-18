@@ -115,18 +115,4 @@ export class UserRepository {
     return await user.update(newUser);
   }
 
-  // async deleteUserwithOtp(id: string): Promise<any> {
-  //   const user = await this.userModel.findByPk(id);
-  //   const otp = await this.otpModel.findOne({
-  //     where: { user_id: id },
-  //   });
-  //   await user.destroy();
-  //   await otp.destroy();
-  // }
-
-  // async deleteUser(id: string): Promise<any> {
-  //   const user = await this.userModel.findByPk(id);
-
-  //   await user.destroy();
-  // }
 }

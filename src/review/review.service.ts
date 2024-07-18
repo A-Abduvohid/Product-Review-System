@@ -27,7 +27,7 @@ export class ReviewService {
         );
       }
 
-      if (typeof rating !== 'number' || rating < 1 || rating > 5) {
+      if (typeof rating !== 'number' || (rating < 0 && rating > 5)) {
         return new HttpException(
           'Rating must be a number between 1 and 5',
           HttpStatus.BAD_REQUEST,
@@ -93,7 +93,7 @@ export class ReviewService {
 
   async update(id: string, updateReviewDto: UpdateReviewDto): Promise<any> {
     try {
-      const { user_id, product_id } = updateReviewDto;
+      const { user_id, product_id, rating } = updateReviewDto;
 
       const existUser = await this.userRepository.findByPk(user_id);
 
@@ -106,10 +106,18 @@ export class ReviewService {
         );
       }
 
+      if (typeof rating !== 'number' || (rating < 0 && rating > 5)) {
+        return new HttpException(
+          'Rating must be a number between 1 and 5',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
       const updatedReview = await this.reviewRepository.update(id, {
         ...updateReviewDto,
         user_id,
         product_id,
+        rating
       });
 
       if (!updatedReview) {
@@ -133,7 +141,7 @@ export class ReviewService {
     }
   }
 
-  async delete(id: string, request :any): Promise<any> {
+  async delete(id: string, request: any): Promise<any> {
     try {
       const existReview = await this.reviewRepository.findOne(id);
 

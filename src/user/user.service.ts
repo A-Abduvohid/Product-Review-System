@@ -140,30 +140,4 @@ export class UserService {
     }
   }
 
-  // async delete(id: string): Promise<any> {
-  //   try {
-  //     const user = await this.userRepository.findByPk(id);
-
-  //     if (!user) {
-  //       return new HttpException('Not Found', HttpStatus.NOT_FOUND);
-  //     }
-
-  //     if (user.status === 'inactive') {
-  //       await this.userRepository.deleteUserwithOtp(id);
-  //     } else {
-  //       await this.userRepository.deleteUser(id);
-  //     }
-  //     return {
-  //       message: 'Deleted Successfully',
-  //       statusCode: 200,
-  //     };
-  //   } catch (error) {
-  //     console.log(error);
-
-  //     return new HttpException(
-  //       'Internal Server Error',
-  //       HttpStatus.INTERNAL_SERVER_ERROR,
-  //     );
-  //   }
-  // }
 }

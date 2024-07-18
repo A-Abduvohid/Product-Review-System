@@ -29,5 +29,10 @@ bootstrap();
       "email": "abdujoborzorbola@gmail.com",
       "password": "123456",
       "role": "user"
+
+      "username": "Abdulaziz",
+      "email": "justincase25154@gmail.com",
+      "password": "123456",
+      "role": "moderator"
       
 */ 

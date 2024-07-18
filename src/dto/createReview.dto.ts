@@ -4,7 +4,6 @@ import {
   IsNumber,
   IsString,
   IsUUID,
-  Length,
 } from 'class-validator';
 
 export class CreateReviewDto {
@@ -19,7 +18,6 @@ export class CreateReviewDto {
   user_id: string;
 
   @IsNumber()
-  @Length(1, 5)
   @IsNotEmpty()
   rating: number;
 

@@ -9,6 +9,7 @@ import {
 import * as bcrypt from 'bcrypt';
 import { MailerService } from '@nestjs-modules/mailer';
 import { JwtService } from '@nestjs/jwt';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
@@ -16,63 +17,11 @@ export class AuthService {
     private readonly userRepository: UserRepository,
     private readonly mailerService: MailerService,
     private readonly jwtService: JwtService,
+    private readonly userService: UserService,
   ) {}
 
   async signup(signUpUserDto: SignUpUserDto): Promise<any> {
-    try {
-      const { password, username, email, role } = signUpUserDto;
-
-      const existUser = await this.userRepository.findOneUserWithEmail(email);
-
-      if (existUser) {
-        return new HttpException('User already exists', HttpStatus.NOT_FOUND);
-      }
-
-      const existUsername =
-        await this.userRepository.findOneUserWithUsername(username);
-
-      if (existUsername) {
-        return new HttpException(
-          'Username already exists, use another username',
-          HttpStatus.NOT_FOUND,
-        );
-      }
-
-      const hashedPassword = await bcrypt.hash(
-        password,
-        Number(process.env.BCRYPT_SALT),
-      );
-
-      const newUser = await this.userRepository.create({
-        email,
-        password: hashedPassword,
-        username,
-        role,
-      });
-
-      const otp = Math.floor(Math.random() * 1000000) + '';
-
-      await this.mailerService.sendMail({
-        to: email,
-        subject: 'Your One Time Password ✔',
-        html: `<h2>${otp}</h2>`,
-      });
-
-      await this.userRepository.createOtp(otp, newUser.id);
-
-      return {
-        id: newUser.id,
-        username: newUser.username,
-        message: 'Successfully created',
-        statusCode: HttpStatus.CREATED,
-      };
-    } catch (error) {
-      console.log(error);
-      return new HttpException(
-        'Internal Server Error',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    return await this.userService.create(signUpUserDto);
   }
 
   async verify_otp(verifyOtpDto: VerifyOtpDto): Promise<any> {

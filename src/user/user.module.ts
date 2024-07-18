@@ -10,6 +10,6 @@ import { User, Otp, RefreshToken } from 'src/entities/index.entity';
   imports: [SequelizeModule.forFeature([User, Otp, RefreshToken])],
   controllers: [ UserController ],
   providers: [UserRepository, UserService],
-  exports: [UserRepository, UserService, SequelizeModule]
+  exports: [UserRepository, UserService]
 })
 export class UserModule {}
